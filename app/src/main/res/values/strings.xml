@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">OcadoChallenge</string>
+    <string name="error_message">Error</string>
+    <string name="increase_state">Sorted by Increasing ABV</string>
+    <string name="decrease_state">Sorted by Decreasing ABV</string>
+    <string name="increase_button_title">Increase ABV</string>
+    <string name="decrease_button_title">Decrease ABV</string>
 </resources>
