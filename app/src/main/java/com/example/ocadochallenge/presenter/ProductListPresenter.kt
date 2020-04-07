@@ -1,6 +1,7 @@
 package com.example.ocadochallenge.presenter
 
-import com.example.ocadochallenge.domain.model.ProductModel
+import com.example.ocadochallenge.domain.model.Product
+import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.domain.usecase.GetProductListUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -24,10 +25,10 @@ class ProductListPresenter @Inject constructor(
         launchAsyncGetProcess(foodName) { view.showResultList(sortByDecreasingABV(it)) }
     }
 
-    private fun launchAsyncGetProcess(foodName: String, block: (List<ProductModel>) -> Unit){
+    private fun launchAsyncGetProcess(foodName: String, block: (List<ProductCluster>) -> Unit){
         launch {
             val results = withContext(ioDispatcher) {
-                getProductListUseCase(foodName)
+                getProductListUseCase()
             }
             results.fold(
                 onSuccess = block,
@@ -36,12 +37,14 @@ class ProductListPresenter @Inject constructor(
         }
     }
 
-    private fun sortByIncreasingABV(productList: List<ProductModel>): List<ProductModel> {
-        return productList.sortedBy { it.abv }
+    private fun sortByIncreasingABV(productList: List<ProductCluster>): List<ProductCluster> {
+//        return productList.sortedBy { it.abv }
+        return emptyList()
     }
 
-    private fun sortByDecreasingABV(productList: List<ProductModel>): List<ProductModel> {
-        return productList.sortedByDescending { it.abv }
+    private fun sortByDecreasingABV(productList: List<ProductCluster>): List<ProductCluster> {
+//        return productList.sortedByDescending { it.abv }
+        return emptyList()
     }
 
 }

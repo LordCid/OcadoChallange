@@ -1,15 +1,15 @@
 package com.example.ocadochallenge.presenter
 
-import com.example.ocadochallenge.domain.model.ProductModel
+import com.example.ocadochallenge.domain.model.ProductCluster
 
 interface ProductListContract {
 
-    interface View{
-        fun showResultList(productList: List<ProductModel>)
+    interface View {
+        fun showResultList(productList: List<ProductCluster>)
         fun showError()
     }
 
-    interface Presenter{
+    interface Presenter {
         fun getBeerListSortByIncreasingABV(foodName: String)
         fun getBeerListSortByDecreasingABV(foodName: String)
     }

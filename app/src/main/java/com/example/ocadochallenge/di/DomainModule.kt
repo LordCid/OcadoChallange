@@ -9,5 +9,5 @@ import dagger.Module
 interface DomainModule {
 
     @Binds
-    fun bindGetBeersForFoodUseCase(useCase: GetProductListUseCaseImpl): GetProductListUseCase
+    fun bindGetProductListUseCase(useCase: GetProductListUseCaseImpl): GetProductListUseCase
 }

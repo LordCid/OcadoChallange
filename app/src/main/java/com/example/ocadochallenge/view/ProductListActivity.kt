@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
-import com.example.ocadochallenge.domain.model.ProductModel
+import com.example.ocadochallenge.domain.model.Product
+import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.presenter.ProductListContract
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.product_list_activity.*
@@ -64,7 +65,7 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
         })
     }
 
-    override fun showResultList(productList: List<ProductModel>) {
+    override fun showResultList(productList: List<ProductCluster>) {
         listView.visibility = VISIBLE
         error_tv.visibility = GONE
         beerListAdapter.productList = productList

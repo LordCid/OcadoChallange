@@ -1,15 +1,14 @@
 package com.example.ocadochallenge.repository
 
-import com.example.brewdogbeers.repository.ProductsRespository
-import com.example.ocadochallenge.domain.model.ProductModel
-import com.example.brewdogbeers.repository.rest.ProductsNetworkDataSource
+import com.example.ocadochallenge.domain.model.ProductCluster
+import com.example.ocadochallenge.repository.rest.ProductsNetworkDataSource
 import javax.inject.Inject
 
 class ProductsRespositoryImpl @Inject constructor(
     private val networkDataSource: ProductsNetworkDataSource
 ) : ProductsRespository {
-    override suspend fun getBeersForFood(foodName: String): Result<List<ProductModel>> {
-        return networkDataSource.getBeersFromFood(foodName)
+    override suspend fun getProductList(): Result<List<ProductCluster>> {
+        return networkDataSource.getProducts()
 //        return if(foodName == localDataSource.getPreviouslySearchedFoodName()) {
 //           localDataSource.getBeerList()
 //

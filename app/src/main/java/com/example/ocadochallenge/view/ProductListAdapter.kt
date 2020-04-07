@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
-import com.example.ocadochallenge.domain.model.ProductModel
+import com.example.ocadochallenge.domain.model.Product
+import com.example.ocadochallenge.domain.model.ProductCluster
 import kotlinx.android.synthetic.main.item_list.view.*
 import kotlin.properties.Delegates
 
 class ProductListAdapter(private val imagesLoader: ImagesLoader) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var productList: List<ProductModel> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
+    var productList: List<ProductCluster> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             notifyDataSetChanged()
         }
@@ -30,12 +31,12 @@ class ProductListAdapter(private val imagesLoader: ImagesLoader) : RecyclerView.
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val listItemHolder = holder as ListItemViewHolder
-        val beerData = productList.get(position)
-        listItemHolder.showImage(beerData.image)
-        listItemHolder.showName(beerData.name)
-        listItemHolder.showTagline(beerData.tagline)
-        listItemHolder.showDescription(beerData.description)
-        listItemHolder.showABV(beerData.abv)
+        val productData = productList.get(position)
+//        listItemHolder.showImage(productData.)
+//        listItemHolder.showName(beerData.name)
+//        listItemHolder.showTagline(beerData.tagline)
+//        listItemHolder.showDescription(beerData.description)
+//        listItemHolder.showABV(beerData.abv)
     }
 }
 

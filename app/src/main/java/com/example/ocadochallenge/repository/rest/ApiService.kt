@@ -1,7 +1,7 @@
-package com.example.brewdogbeers.repository.rest
+package com.example.ocadochallenge.repository.rest
 
 import com.example.brewdogbeers.Constants.BASE_URL
-import com.example.brewdogbeers.repository.rest.model.NetworkBeerModel
+import com.example.ocadochallenge.repository.rest.model.ProductClusterListNetworkModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -12,8 +12,8 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @GET("beers")
-    fun getBeersForFood(@Query("food") action: String): Call<List<NetworkBeerModel>>
+    @GET("products")
+    fun getProducts(): Call<ProductClusterListNetworkModel>
 
     companion object {
         fun create(): ApiService {

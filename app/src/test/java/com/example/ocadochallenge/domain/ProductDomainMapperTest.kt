@@ -1,16 +1,28 @@
 package com.example.ocadochallenge.domain
 
-import com.example.ocadochallenge.domain.model.ProductModel
-import com.example.brewdogbeers.repository.rest.model.NetworkBeerModel
-import com.example.ocadochallenge.someBeerModel
-import com.example.ocadochallenge.someNetworkBeerModel
-import com.example.ocadochallenge.someOtherBeerModel
-import com.example.ocadochallenge.someOtherNetworkBeerModel
+import com.example.ocadochallenge.domain.model.ProductCluster
+import com.example.ocadochallenge.repository.rest.model.ProductClusterListNetworkModel
+import com.example.ocadochallenge.repository.rest.model.ProductClusterNetworkModel
+import com.example.ocadochallenge.repository.rest.model.ProductNetworkModel
+import com.example.ocadochallenge.someProduct
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class ProductDomainMapperTest {
+
+    private val someNetworkProduct = ProductNetworkModel(
+        id = 12345,
+        price = "1.45",
+        title = "some title",
+        size = "6 units",
+        imageUrl = "image"
+    )
+
+    private val someProductClusterModel = ProductCluster(
+        tag = "someTag",
+        products = listOf(someProduct, someProduct)
+    )
 
     private lateinit var sut: ProductDomainMapper
 
@@ -21,61 +33,43 @@ class ProductDomainMapperTest {
 
     @Test
     fun `Should map some network list model to list domain model`() {
-        val expected = expectedBeerModel()
+        val expected = expectedProductClusterList()
 
-        val actual = sut.mapList(givenNetworkModel())
-
-        assertEquals(expected, actual)
-    }
-
-    @Test
-    fun `Should map OTHER network list model to list domain model`() {
-        val expected = expectedOtherBeerModel()
-
-        val actual = sut.mapList(givenOtherNetworkModel())
+        val actual = sut.map(givenNetworkModel())
 
         assertEquals(expected, actual)
     }
 
-    @Test
-    fun `Should map network list null values to empty string or 0 values`() {
-        val expected = expectedEmptyBeerModel()
+//    @Test
+//    fun `Should map OTHER network list model to list domain model`() {
+//        val expected = expectedOtherBeerModel()
+//
+//        val actual = sut.mapList(givenOtherNetworkModel())
+//
+//        assertEquals(expected, actual)
+//    }
+//
+//    @Test
+//    fun `Should map network list null values to empty string or 0 values`() {
+//        val expected = expectedEmptyBeerModel()
+//
+//        val actual = sut.mapList(givenNullValuesNetworkBeerModel())
+//
+//        assertEquals(expected, actual)
+//    }
 
-        val actual = sut.mapList(givenNullValuesNetworkBeerModel())
-
-        assertEquals(expected, actual)
-    }
-
-    private fun givenNetworkModel() = listOf(someNetworkBeerModel)
-
-    private fun givenOtherNetworkModel() = listOf(someOtherNetworkBeerModel)
-
-    private fun givenNullValuesNetworkBeerModel(): List<NetworkBeerModel> {
-        return listOf(
-            NetworkBeerModel(
-                name = null,
-                tagline = null,
-                description = null,
-                image_url = null,
-                abv = null
-            )
+    private fun givenNetworkModel(): ProductClusterListNetworkModel {
+        val someProductNetworkCluster = ProductClusterNetworkModel(
+            tag = "someTag",
+            items = listOf(someNetworkProduct, someNetworkProduct)
+        )
+        return ProductClusterListNetworkModel(
+            clusters = listOf(someProductNetworkCluster)
         )
     }
 
-    private fun expectedBeerModel() = listOf(someBeerModel)
-
-    private fun expectedOtherBeerModel() = listOf(someOtherBeerModel)
-
-    private fun expectedEmptyBeerModel(): List<ProductModel> {
-        return listOf(
-            ProductModel(
-                name = "",
-                tagline = "",
-                description = "",
-                image = "",
-                abv = 0f
-            )
-        )
+    private fun expectedProductClusterList(): List<ProductCluster> {
+        return listOf(someProductClusterModel)
     }
 }
 

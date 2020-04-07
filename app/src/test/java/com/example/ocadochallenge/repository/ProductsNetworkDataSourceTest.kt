@@ -3,10 +3,10 @@ package com.example.ocadochallenge.repository
 import com.example.ocadochallenge.GlobalConstants.ANY_FOOD
 import com.example.ocadochallenge.GlobalConstants.ANY_OTHER_FOOD
 import com.example.ocadochallenge.domain.ProductDomainMapper
-import com.example.brewdogbeers.repository.rest.ApiService
-import com.example.brewdogbeers.repository.rest.ProductsNetworkDataSource
+import com.example.ocadochallenge.repository.rest.ApiService
+import com.example.ocadochallenge.repository.rest.ProductsNetworkDataSource
 import com.example.brewdogbeers.repository.rest.ProductsNetworkDataSourceImpl
-import com.example.ocadochallenge.someBeerModel
+import com.example.ocadochallenge.someProduct
 import com.example.ocadochallenge.someNetworkBeerModel
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
@@ -38,21 +38,21 @@ class ProductsNetworkDataSourceTest {
         runBlocking {
             givenNetworkResponseOK()
 
-            sut.getBeersFromFood(ANY_FOOD)
+            sut.getProducts()
 
-            verify(apiService).getBeersForFood(ANY_FOOD)
+            verify(apiService).getProducts()
         }
     }
 
     @Test
     fun `Given Success request, domain result List is returned`() {
         runBlocking {
-            val expectedBeerList = listOf(someBeerModel, someBeerModel)
+            val expectedBeerList = listOf(someProduct, someProduct)
             givenNetworkResponseOK()
 
-            val actual = sut.getBeersFromFood(ANY_FOOD)
+            val actual = sut.getProducts()
 
-            verify(apiService).getBeersForFood(ANY_FOOD)
+            verify(apiService).getProducts()
             assertEquals(Result.success(expectedBeerList), actual)
         }
     }
@@ -60,12 +60,12 @@ class ProductsNetworkDataSourceTest {
     @Test
     fun `Given Success response for OTHER  food, domain reuslt list is returned`() {
         runBlocking {
-            val expectedBeerList = listOf(someBeerModel)
+            val expectedBeerList = listOf(someProduct)
             givenOtherNetworkResponseOK()
 
-            val actual = sut.getBeersFromFood(ANY_OTHER_FOOD)
+            val actual = sut.getProducts()
 
-            verify(apiService).getBeersForFood(ANY_OTHER_FOOD)
+            verify(apiService).getProducts()
             assertEquals(Result.success(expectedBeerList), actual)
         }
     }
@@ -75,24 +75,24 @@ class ProductsNetworkDataSourceTest {
         runBlocking {
             givenNetworkResponseKO()
 
-            val result = sut.getBeersFromFood(ANY_FOOD)
+            val result = sut.getProducts()
             assert(result.isFailure)
         }
     }
 
 
     private fun givenNetworkResponseOK() {
-        given(apiService.getBeersForFood(ANY_FOOD))
+        given(apiService.getProducts())
             .willReturn(Calls.response(someBeerDataResults))
     }
 
     private fun givenOtherNetworkResponseOK() {
-        given(apiService.getBeersForFood(ANY_OTHER_FOOD))
+        given(apiService.getProducts())
             .willReturn(Calls.response(someOtherBeerDataResults))
     }
 
     private fun givenNetworkResponseKO() {
-        given(apiService.getBeersForFood(ANY_OTHER_FOOD))
+        given(apiService.getProducts())
             .willReturn(Calls.failure(Exception()))
     }
 

@@ -1,7 +1,7 @@
-package com.example.brewdogbeers.repository
+package com.example.ocadochallenge.repository
 
-import com.example.ocadochallenge.domain.model.ProductModel
+import com.example.ocadochallenge.domain.model.ProductCluster
 
 interface ProductsRespository {
-    suspend fun getBeersForFood(foodName: String): Result<List<ProductModel>>
+    suspend fun getProductList(): Result<List<ProductCluster>>
 }

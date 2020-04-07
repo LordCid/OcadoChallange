@@ -1,7 +1,7 @@
 package com.example.ocadochallenge.presenter
 
 import com.example.ocadochallenge.GlobalConstants.ANY_FOOD
-import com.example.ocadochallenge.domain.model.ProductModel
+import com.example.ocadochallenge.domain.model.Product
 import com.example.ocadochallenge.domain.usecase.GetProductListUseCase
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.inOrder
@@ -15,7 +15,6 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
 
 class ProductListPresenterTest {
 
@@ -25,7 +24,7 @@ class ProductListPresenterTest {
     private lateinit var sut: ProductListContract.Presenter
 
 
-    val lowAbvBeerModel = ProductModel(
+    val lowAbvBeerModel = Product(
         name = "lowAbvBeerName",
         tagline = "tagline",
         description = "description",
@@ -33,7 +32,7 @@ class ProductListPresenterTest {
         abv = 4.0f
     )
 
-    val mediumAbvBeerModel = ProductModel(
+    val mediumAbvBeerModel = Product(
         name = "mediumAbvBeerName",
         tagline = "tagline",
         description = "description",
@@ -41,7 +40,7 @@ class ProductListPresenterTest {
         abv = 10.0f
     )
 
-    val mediumHighAbvBeerModel = ProductModel(
+    val mediumHighAbvBeerModel = Product(
         name = "mediumHighAbvBeerName",
         tagline = "tagline",
         description = "description",
@@ -49,7 +48,7 @@ class ProductListPresenterTest {
         abv = 20.0f
     )
 
-    val highAbvBeerModel = ProductModel(
+    val highAbvBeerModel = Product(
         name = "highAbvBeerName",
         tagline = "tagline",
         description = "description",
@@ -94,7 +93,7 @@ class ProductListPresenterTest {
             sut.getBeerListSortByIncreasingABV(ANY_FOOD)
 
             val inOrder = inOrder(view, getBeersForFoodUseCase)
-            inOrder.verify(getBeersForFoodUseCase).invoke(ANY_FOOD)
+            inOrder.verify(getBeersForFoodUseCase).invoke()
             inOrder.verify(view).showResultList(expectedSortedList)
         }
     }
@@ -120,7 +119,7 @@ class ProductListPresenterTest {
             sut.getBeerListSortByDecreasingABV(ANY_FOOD)
 
             val inOrder = inOrder(view, getBeersForFoodUseCase)
-            inOrder.verify(getBeersForFoodUseCase).invoke(ANY_FOOD)
+            inOrder.verify(getBeersForFoodUseCase).invoke()
             inOrder.verify(view).showResultList(expectedSortedList)
         }
     }
@@ -133,18 +132,18 @@ class ProductListPresenterTest {
             sut.getBeerListSortByIncreasingABV(ANY_FOOD)
 
             val inOrder = inOrder(view, getBeersForFoodUseCase)
-            inOrder.verify(getBeersForFoodUseCase).invoke(ANY_FOOD)
+            inOrder.verify(getBeersForFoodUseCase).invoke()
             inOrder.verify(view).showError()
         }
     }
 
     private suspend fun givenFailureResult() {
-        given(getBeersForFoodUseCase.invoke(anyString()))
+        given(getBeersForFoodUseCase.invoke())
             .willReturn(Result.failure(mock<Exception>()))
     }
 
-    private suspend fun givenSuccessResultWithValues(beerlist: List<ProductModel>) {
-        given(getBeersForFoodUseCase.invoke(anyString()))
+    private suspend fun givenSuccessResultWithValues(beerlist: List<Product>) {
+        given(getBeersForFoodUseCase.invoke())
             .willReturn(Result.success(beerlist))
     }
 }
