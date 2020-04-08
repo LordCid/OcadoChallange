@@ -1,28 +1,16 @@
 package com.example.ocadochallenge.domain
 
 import com.example.ocadochallenge.domain.model.ProductCluster
+import com.example.ocadochallenge.getNetworkModel
+import com.example.ocadochallenge.getOtherNetworkModel
+import com.example.ocadochallenge.getOtherProductClusterList
+import com.example.ocadochallenge.getProductClusterList
 import com.example.ocadochallenge.repository.rest.model.ProductClusterListNetworkModel
-import com.example.ocadochallenge.repository.rest.model.ProductClusterNetworkModel
-import com.example.ocadochallenge.repository.rest.model.ProductNetworkModel
-import com.example.ocadochallenge.someProduct
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
 class ProductDomainMapperTest {
-
-    private val someNetworkProduct = ProductNetworkModel(
-        id = 12345,
-        price = "1.45",
-        title = "some title",
-        size = "6 units",
-        imageUrl = "image"
-    )
-
-    private val someProductClusterModel = ProductCluster(
-        tag = "someTag",
-        products = listOf(someProduct, someProduct)
-    )
 
     private lateinit var sut: ProductDomainMapper
 
@@ -32,44 +20,41 @@ class ProductDomainMapperTest {
     }
 
     @Test
-    fun `Should map some network list model to list domain model`() {
-        val expected = expectedProductClusterList()
+    fun `Should map some network model to domain model`() {
+        val networkModel = getNetworkModel()
+        val expected = getProductClusterList()
 
-        val actual = sut.map(givenNetworkModel())
+        val actual = sut.map(networkModel)
 
         assertEquals(expected, actual)
     }
 
-//    @Test
-//    fun `Should map OTHER network list model to list domain model`() {
-//        val expected = expectedOtherBeerModel()
-//
-//        val actual = sut.mapList(givenOtherNetworkModel())
-//
-//        assertEquals(expected, actual)
-//    }
-//
-//    @Test
-//    fun `Should map network list null values to empty string or 0 values`() {
-//        val expected = expectedEmptyBeerModel()
-//
-//        val actual = sut.mapList(givenNullValuesNetworkBeerModel())
-//
-//        assertEquals(expected, actual)
-//    }
+    @Test
+    fun `Should map OTHER network list model to list domain model`() {
+        val networkModel = getOtherNetworkModel()
+        val expected = getOtherProductClusterList()
 
-    private fun givenNetworkModel(): ProductClusterListNetworkModel {
-        val someProductNetworkCluster = ProductClusterNetworkModel(
-            tag = "someTag",
-            items = listOf(someNetworkProduct, someNetworkProduct)
-        )
-        return ProductClusterListNetworkModel(
-            clusters = listOf(someProductNetworkCluster)
-        )
+        val actual = sut.map(networkModel)
+
+        assertEquals(expected, actual)
     }
 
-    private fun expectedProductClusterList(): List<ProductCluster> {
-        return listOf(someProductClusterModel)
+    @Test
+    fun `Should map network null values to empty string or 0 values`() {
+        val networkModel = givenNullValuesNetworkModel()
+        val expected = expectedEmptyProductClusterList()
+
+        val actual = sut.map(networkModel)
+
+        assertEquals(expected, actual)
+    }
+
+    private fun givenNullValuesNetworkModel() = ProductClusterListNetworkModel(
+        clusters = null
+    )
+
+    private fun expectedEmptyProductClusterList(): List<ProductCluster> {
+        return emptyList()
     }
 }
 
