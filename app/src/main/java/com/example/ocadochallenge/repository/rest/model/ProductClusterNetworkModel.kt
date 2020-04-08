@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductClusterNetworkModel(
     @SerializedName("tag")
-    val tag: String,
+    val tag: String? = null,
     @SerializedName("items")
-    val items: List<ProductNetworkModel>
+    val items: List<ProductNetworkModel>? = null
 )

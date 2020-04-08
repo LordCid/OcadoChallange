@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class ProductClusterListNetworkModel(
     @SerializedName("clusters")
-    val clusters: List<ProductClusterNetworkModel>
+    val clusters: List<ProductClusterNetworkModel>? = null
 )
