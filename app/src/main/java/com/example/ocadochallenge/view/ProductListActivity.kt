@@ -5,11 +5,11 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
-import com.example.ocadochallenge.domain.model.Product
 import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.presenter.ProductListContract
 import dagger.android.AndroidInjection
@@ -26,7 +26,6 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
 
     lateinit var beerListAdapter: ProductListAdapter
 
-    private var state = ProductListViewState.SORT_INCREASE_ABV
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -36,39 +35,22 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
         setUpUI()
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.getProductList()
+    }
+
     private fun setUpUI() {
         listView.apply {
-            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            layoutManager = GridLayoutManager(context, 1)
             this.adapter = beerListAdapter
         }
-        sort_increaseabv_button.setOnClickListener {
-            sort_state_tv.text = getText(R.string.increase_state)
-            state = ProductListViewState.SORT_INCREASE_ABV
-        }
-        sort_decreaseabv_button.setOnClickListener {
-            sort_state_tv.text = getText(R.string.decrease_state)
-            state = ProductListViewState.SORT_DECREASE_ABV
-        }
-
-        toolbar_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                when (state) {
-                    ProductListViewState.SORT_INCREASE_ABV -> presenter.getBeerListSortByIncreasingABV(query)
-                    ProductListViewState.SORT_DECREASE_ABV -> presenter.getBeerListSortByDecreasingABV(query)
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                return true
-            }
-        })
     }
 
     override fun showResultList(productList: List<ProductCluster>) {
         listView.visibility = VISIBLE
         error_tv.visibility = GONE
-        beerListAdapter.productList = productList
+        beerListAdapter.clusterList = productList
     }
 
     override fun showError() {
@@ -77,5 +59,3 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
         error_tv.text = getText(R.string.error_message)
     }
 }
-
-enum class ProductListViewState { SORT_INCREASE_ABV, SORT_DECREASE_ABV }

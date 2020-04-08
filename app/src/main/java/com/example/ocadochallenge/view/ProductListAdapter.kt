@@ -16,7 +16,7 @@ class ProductListAdapter(private val imagesLoader: ImagesLoader) : StickyHeaderG
 
     var clusterList: List<ProductCluster> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
         if (oldValue != newValue) {
-            notifyDataSetChanged()
+            notifyAllSectionsDataSetChanged()
         }
     }
 
