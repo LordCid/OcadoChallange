@@ -9,13 +9,6 @@ class ProductsRespositoryImpl @Inject constructor(
 ) : ProductsRespository {
     override suspend fun getProductList(): Result<List<ProductCluster>> {
         return networkDataSource.getProducts()
-//        return if(foodName == localDataSource.getPreviouslySearchedFoodName()) {
-//           localDataSource.getBeerList()
-//
-//        } else{
-//            networkDataSource.getBeersFromFood(foodName).onSuccess {
-//                localDataSource.storeBeerList(foodName, it)
-//            }
-//        }
+
     }
 }
