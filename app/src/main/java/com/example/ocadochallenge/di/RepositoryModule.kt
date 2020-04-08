@@ -3,7 +3,7 @@ package com.example.ocadochallenge.di
 import com.example.ocadochallenge.repository.ProductsRespository
 import com.example.ocadochallenge.repository.ProductsRespositoryImpl
 import com.example.ocadochallenge.repository.rest.ProductsNetworkDataSource
-import com.example.brewdogbeers.repository.rest.ProductsNetworkDataSourceImpl
+import com.example.ocadochallenge.repository.rest.ProductsNetworkDataSourceImpl
 import dagger.Binds
 import dagger.Module
 
