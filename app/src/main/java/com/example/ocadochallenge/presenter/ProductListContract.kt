@@ -10,7 +10,6 @@ interface ProductListContract {
     }
 
     interface Presenter {
-        fun getBeerListSortByIncreasingABV(foodName: String)
-        fun getBeerListSortByDecreasingABV(foodName: String)
+        fun getProductList()
     }
 }

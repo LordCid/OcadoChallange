@@ -1,9 +1,7 @@
 package com.example.ocadochallenge.domain.usecase
 
-import com.example.ocadochallenge.GlobalConstants.ANY_FOOD
-import com.example.ocadochallenge.GlobalConstants.ANY_OTHER_FOOD
+import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.repository.ProductsRespository
-import com.example.ocadochallenge.someProduct
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -24,25 +22,12 @@ class GetProductListUseCaseTest {
     }
 
     @Test
-    fun `Given food name, should return Result`() {
+    fun `Should return result from product respository`() {
         runBlocking {
-            val expected = Result.success(listOf(someProduct))
+            val expected = Result.success(emptyList<ProductCluster>())
             given(repository.getProductList()).willReturn(expected)
 
-            val actual = sut(ANY_FOOD)
-
-            verify(repository).getProductList()
-            assertEquals(expected, actual)
-        }
-    }
-
-    @Test
-    fun `Given OTHER food name, should return Result`() {
-        runBlocking {
-            val expected = Result.success(listOf(someProduct, someProduct))
-            given(repository.getProductList()).willReturn(expected)
-
-            val actual = sut(ANY_OTHER_FOOD)
+            val actual = sut.invoke()
 
             verify(repository).getProductList()
             assertEquals(expected, actual)

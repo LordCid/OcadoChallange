@@ -1,10 +1,10 @@
 package com.example.ocadochallenge.presenter
 
-import com.example.ocadochallenge.GlobalConstants.ANY_FOOD
-import com.example.ocadochallenge.domain.model.Product
+import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.domain.usecase.GetProductListUseCase
+import com.example.ocadochallenge.someProduct
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.inOrder
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,46 +15,14 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.inOrder
 
 class ProductListPresenterTest {
 
     private val view = mock<ProductListContract.View>()
-    private val getBeersForFoodUseCase = mock<GetProductListUseCase>()
+    private val getProductListUseCase = mock<GetProductListUseCase>()
 
     private lateinit var sut: ProductListContract.Presenter
-
-
-    val lowAbvBeerModel = Product(
-        name = "lowAbvBeerName",
-        tagline = "tagline",
-        description = "description",
-        image = "image",
-        abv = 4.0f
-    )
-
-    val mediumAbvBeerModel = Product(
-        name = "mediumAbvBeerName",
-        tagline = "tagline",
-        description = "description",
-        image = "image",
-        abv = 10.0f
-    )
-
-    val mediumHighAbvBeerModel = Product(
-        name = "mediumHighAbvBeerName",
-        tagline = "tagline",
-        description = "description",
-        image = "image",
-        abv = 20.0f
-    )
-
-    val highAbvBeerModel = Product(
-        name = "highAbvBeerName",
-        tagline = "tagline",
-        description = "description",
-        image = "image",
-        abv = 40.0f
-    )
 
     @ExperimentalCoroutinesApi
     private var dispatcher = TestCoroutineDispatcher()
@@ -63,7 +31,7 @@ class ProductListPresenterTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(dispatcher)
-        sut = ProductListPresenter(view, getBeersForFoodUseCase, dispatcher)
+        sut = ProductListPresenter(view, getProductListUseCase, dispatcher)
     }
 
     @ExperimentalCoroutinesApi
@@ -74,76 +42,43 @@ class ProductListPresenterTest {
     }
 
     @Test
-    fun `Given list getted, when sorting by increasing abv beer, correct list is shown in the UI`() {
+    fun `Given product list getted, it is shown into UI`() {
         runBlocking {
-            val expectedSortedList = listOf(
-                lowAbvBeerModel,
-                mediumAbvBeerModel,
-                mediumHighAbvBeerModel,
-                highAbvBeerModel
+            val someCluster = ProductCluster(
+                tag = "someTag",
+                products = listOf(someProduct, someProduct)
             )
-            val resultList = listOf(
-                mediumHighAbvBeerModel,
-                mediumAbvBeerModel,
-                highAbvBeerModel,
-                lowAbvBeerModel
-            )
-            givenSuccessResultWithValues(resultList)
+            val expectedList = listOf(someCluster)
+            givenSuccessResultWithValues(expectedList)
 
-            sut.getBeerListSortByIncreasingABV(ANY_FOOD)
+            sut.getProductList()
 
-            val inOrder = inOrder(view, getBeersForFoodUseCase)
-            inOrder.verify(getBeersForFoodUseCase).invoke()
-            inOrder.verify(view).showResultList(expectedSortedList)
-        }
-    }
-
-
-    @Test
-    fun `Given list getted, when sorting by decreasing abv beer, correct list is shown in the UI`() {
-        runBlocking {
-            val expectedSortedList = listOf(
-                highAbvBeerModel,
-                mediumHighAbvBeerModel,
-                mediumAbvBeerModel,
-                lowAbvBeerModel
-            )
-            val resultList = listOf(
-                mediumHighAbvBeerModel,
-                mediumAbvBeerModel,
-                highAbvBeerModel,
-                lowAbvBeerModel
-            )
-            givenSuccessResultWithValues(resultList)
-
-            sut.getBeerListSortByDecreasingABV(ANY_FOOD)
-
-            val inOrder = inOrder(view, getBeersForFoodUseCase)
-            inOrder.verify(getBeersForFoodUseCase).invoke()
-            inOrder.verify(view).showResultList(expectedSortedList)
+            val inOrder = inOrder(view, getProductListUseCase)
+            inOrder.verify(getProductListUseCase).invoke()
+            inOrder.verify(view).showResultList(expectedList)
         }
     }
 
     @Test
-    fun `Given failure getted when input search term, error is shown in UI`() {
+    fun `Given failure when getting product list, error is shown in the UI`() {
         runBlocking {
             givenFailureResult()
 
-            sut.getBeerListSortByIncreasingABV(ANY_FOOD)
+            sut.getProductList()
 
-            val inOrder = inOrder(view, getBeersForFoodUseCase)
-            inOrder.verify(getBeersForFoodUseCase).invoke()
+            val inOrder = inOrder(view, getProductListUseCase)
+            inOrder.verify(getProductListUseCase).invoke()
             inOrder.verify(view).showError()
         }
     }
 
-    private suspend fun givenFailureResult() {
-        given(getBeersForFoodUseCase.invoke())
-            .willReturn(Result.failure(mock<Exception>()))
+
+
+    private suspend fun givenSuccessResultWithValues(list: List<ProductCluster>) {
+        given(getProductListUseCase.invoke()).willReturn(Result.success(list))
     }
 
-    private suspend fun givenSuccessResultWithValues(beerlist: List<Product>) {
-        given(getBeersForFoodUseCase.invoke())
-            .willReturn(Result.success(beerlist))
+    private suspend fun givenFailureResult() {
+        given(getProductListUseCase.invoke()).willReturn(Result.failure(mock<Exception>()))
     }
 }
