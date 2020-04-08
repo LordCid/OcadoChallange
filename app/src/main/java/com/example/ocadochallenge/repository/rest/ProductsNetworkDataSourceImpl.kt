@@ -15,10 +15,10 @@ class ProductsNetworkDataSourceImpl @Inject constructor(
             apiService.getProducts().awaitResponse()
         }.fold(
             onSuccess = {
-                val beerList = it.body()?.let {
+                val clusterList = it.body()?.let {
                         response -> mapper.map(response)
                 }.orEmpty()
-                Result.success(beerList)
+                Result.success(clusterList)
             },
             onFailure = { Result.failure(it) }
         )
