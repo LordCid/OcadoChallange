@@ -4,64 +4,87 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.codewaves.stickyheadergrid.StickyHeaderGridAdapter
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
-import com.example.ocadochallenge.domain.model.Product
 import com.example.ocadochallenge.domain.model.ProductCluster
+import kotlinx.android.synthetic.main.header_list.view.*
 import kotlinx.android.synthetic.main.item_list.view.*
 import kotlin.properties.Delegates
 
-class ProductListAdapter(private val imagesLoader: ImagesLoader) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ProductListAdapter(private val imagesLoader: ImagesLoader) : StickyHeaderGridAdapter() {
 
-    var productList: List<ProductCluster> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
+    var clusterList: List<ProductCluster> by Delegates.observable(emptyList()) { _, oldValue, newValue ->
         if (oldValue != newValue) {
             notifyDataSetChanged()
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun getSectionCount(): Int {
+        return clusterList.size
+    }
+
+    override fun getSectionItemCount(clusterIndex: Int): Int {
+        return clusterList[clusterIndex].products.size
+    }
+
+
+    override fun onCreateHeaderViewHolder(parent: ViewGroup, headerType: Int): HeaderViewHolder {
+        val inflater: LayoutInflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.header_list, parent, false)
+        return ClusterHeaderViewHolder(view)
+    }
+
+    override fun onCreateItemViewHolder(parent: ViewGroup, itemType: Int): ItemViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.item_list, parent, false)
         return ListItemViewHolder(imagesLoader, view)
     }
 
-    override fun getItemCount(): Int {
-        return productList.size
+
+    override fun onBindHeaderViewHolder(viewHolder: HeaderViewHolder, section: Int) {
+        val headerViewHolder = viewHolder as ClusterHeaderViewHolder
+        headerViewHolder.showClusterTag(clusterList[section].tag)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val listItemHolder = holder as ListItemViewHolder
-        val productData = productList.get(position)
-//        listItemHolder.showImage(productData.)
-//        listItemHolder.showName(beerData.name)
-//        listItemHolder.showTagline(beerData.tagline)
-//        listItemHolder.showDescription(beerData.description)
-//        listItemHolder.showABV(beerData.abv)
+    override fun onBindItemViewHolder(viewHolder: ItemViewHolder, section: Int, offset: Int) {
+        val listItemHolder = viewHolder as ListItemViewHolder
+        val productData = clusterList[section].products[offset]
+        with(listItemHolder){
+            showImage(productData.imageUrl)
+            showTitle(productData.title)
+            showPrice(productData.price)
+            showSize(productData.size)
+        }
+    }
+
+}
+
+class ClusterHeaderViewHolder(itemView: View): StickyHeaderGridAdapter.HeaderViewHolder(itemView){
+    fun showClusterTag(tag: String){
+        itemView.cluster_tv.text = tag
     }
 }
 
 class ListItemViewHolder(
     private val imagesLoader: ImagesLoader,
     itemView: View
-) : RecyclerView.ViewHolder(itemView) {
+) : StickyHeaderGridAdapter.ItemViewHolder(itemView) {
 
     fun showImage(imageUrl: String) {
         imagesLoader.loadImage(imageUrl, itemView.food_image)
     }
 
-    fun showName(name: String) {
-        itemView.name_tv.text = name
+    fun showTitle(title: String) {
+        itemView.title_tv.text = title
     }
 
-    fun showTagline(tagline: String) {
-        itemView.tagline_tv.text = tagline
+    fun showSize(size: String) {
+        itemView.size_tv.text = size
     }
 
-    fun showDescription(description: String) {
-        itemView.description_tv.text = description
+    fun showPrice(price: String) {
+        itemView.price_tv.text = price
     }
 
-    fun showABV(abv: Float) {
-        itemView.abv_tv.text = abv.toString()
-    }
 }
