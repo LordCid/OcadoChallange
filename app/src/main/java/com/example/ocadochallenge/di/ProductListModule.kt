@@ -2,10 +2,9 @@ package com.example.ocadochallenge.di
 
 import com.example.ocadochallenge.domain.Mapper
 import com.example.ocadochallenge.repository.rest.ApiService
-import com.example.ocadochallenge.domain.ProductDomainMapper
+import com.example.ocadochallenge.domain.ProductListMapper
 import com.example.ocadochallenge.domain.imageloader.GlideImplementation
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
-import com.example.ocadochallenge.domain.model.Product
 import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.presenter.ProductListContract
 import com.example.ocadochallenge.presenter.ProductListPresenter
@@ -36,5 +35,5 @@ object ProductListProvidesModule {
 
     @Provides
     @JvmStatic
-    fun providesProductMapper(): Mapper<ProductClusterListNetworkModel, List<ProductCluster>> = ProductDomainMapper()
+    fun providesProductMapper(): Mapper<ProductClusterListNetworkModel, List<ProductCluster>> = ProductListMapper()
 }
