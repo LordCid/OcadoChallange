@@ -42,7 +42,7 @@ class ProductListPresenterTest {
     }
 
     @Test
-    fun `Given product list getted, it is shown into UI`() {
+    fun `Given product list get, it is shown into UI`() {
         runBlocking {
             val someCluster = ProductCluster(
                 tag = "someTag",
