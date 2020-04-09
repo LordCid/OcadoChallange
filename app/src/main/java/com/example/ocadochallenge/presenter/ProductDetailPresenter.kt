@@ -6,8 +6,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ProductDetailPresenter(
+class ProductDetailPresenter @Inject constructor(
     private val view: ProductDetailContract.View,
     private val getProductUseCase: GetProductUseCase,
     private val ioDispatcher: CoroutineDispatcher
