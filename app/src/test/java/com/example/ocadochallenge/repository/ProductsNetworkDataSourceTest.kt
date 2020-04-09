@@ -1,7 +1,6 @@
 package com.example.ocadochallenge.repository
 
-import com.example.ocadochallenge.domain.ProductListMapper
-import com.example.ocadochallenge.domain.ProductMapper
+import com.example.ocadochallenge.domain.ProductMapperImp
 import com.example.ocadochallenge.getNetworkModel
 import com.example.ocadochallenge.getOtherNetworkModel
 import com.example.ocadochallenge.getOtherProductClusterList
@@ -26,12 +25,11 @@ class ProductsNetworkDataSourceTest {
 
     private val apiService = mock<ApiService>()
 
-    private val listMapper = ProductListMapper()
-    private val productMapper = ProductMapper()
+    private val listMapper = ProductMapperImp()
 
     @Before
     fun setUp() {
-        sut = ProductsNetworkDataSourceImpl(apiService, listMapper, productMapper)
+        sut = ProductsNetworkDataSourceImpl(apiService, listMapper)
     }
 
     @Test
