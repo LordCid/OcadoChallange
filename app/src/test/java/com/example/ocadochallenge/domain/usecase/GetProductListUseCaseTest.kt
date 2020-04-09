@@ -1,7 +1,7 @@
 package com.example.ocadochallenge.domain.usecase
 
 import com.example.ocadochallenge.domain.model.ProductCluster
-import com.example.ocadochallenge.repository.ProductsRespository
+import com.example.ocadochallenge.repository.ProductRepository
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -12,7 +12,7 @@ import org.junit.Test
 
 class GetProductListUseCaseTest {
 
-    private val repository = mock<ProductsRespository>()
+    private val repository = mock<ProductRepository>()
 
     private lateinit var sut: GetProductListUseCase
 
@@ -22,7 +22,7 @@ class GetProductListUseCaseTest {
     }
 
     @Test
-    fun `Should return result from product respository`() {
+    fun `Should return result from product repository`() {
         runBlocking {
             val expected = Result.success(emptyList<ProductCluster>())
             given(repository.getProductList()).willReturn(expected)
