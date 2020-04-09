@@ -1,5 +1,6 @@
 package com.example.ocadochallenge.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View.GONE
@@ -15,7 +16,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.product_list_activity.*
 import javax.inject.Inject
 
-class ProductListActivity : AppCompatActivity(), ProductListContract.View {
+class ProductListActivity: AppCompatActivity(), ProductListContract.View {
 
     @Inject
     lateinit var presenter: ProductListContract.Presenter
@@ -23,7 +24,7 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
     @Inject
     lateinit var imagesLoader: ImagesLoader
 
-    lateinit var listAdapter: ProductListAdapter
+    private lateinit var listAdapter: ProductListAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +46,8 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
             this.adapter = listAdapter
         }
         listAdapter.onClickItem = {
-            Toast.makeText(this, "clicked id=$it", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, ProductDetailActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -71,7 +71,7 @@ class ListItemViewHolder(
     fun bind(product: Product){
         with(itemView){
             setOnClickListener { onClick(product.id) }
-            imagesLoader.loadImage(product.imageUrl, food_image)
+            imagesLoader.loadImage(product.imageUrl, product_image)
             title_tv.text = product.title
             size_tv.text = product.size
             price_tv.text = product.price
