@@ -1,13 +1,12 @@
 package com.example.ocadochallenge.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
 import com.example.ocadochallenge.domain.model.ProductCluster
@@ -24,12 +23,12 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
     @Inject
     lateinit var imagesLoader: ImagesLoader
 
-    lateinit var beerListAdapter: ProductListAdapter
+    lateinit var listAdapter: ProductListAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        beerListAdapter = ProductListAdapter(imagesLoader)
+        listAdapter = ProductListAdapter(imagesLoader)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.product_list_activity)
         setUpUI()
@@ -43,14 +42,17 @@ class ProductListActivity : AppCompatActivity(), ProductListContract.View {
     private fun setUpUI() {
         listView.apply {
             layoutManager = GridLayoutManager(context, 1)
-            this.adapter = beerListAdapter
+            this.adapter = listAdapter
+        }
+        listAdapter.onClickItem = {
+            Toast.makeText(this, "clicked id=$it", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun showResultList(productList: List<ProductCluster>) {
         listView.visibility = VISIBLE
         error_tv.visibility = GONE
-        beerListAdapter.clusterList = productList
+        listAdapter.clusterList = productList
     }
 
     override fun showError() {

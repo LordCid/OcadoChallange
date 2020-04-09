@@ -3,10 +3,10 @@ package com.example.ocadochallenge.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.codewaves.stickyheadergrid.StickyHeaderGridAdapter
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
+import com.example.ocadochallenge.domain.model.Product
 import com.example.ocadochallenge.domain.model.ProductCluster
 import kotlinx.android.synthetic.main.header_list.view.*
 import kotlinx.android.synthetic.main.item_list.view.*
@@ -19,6 +19,8 @@ class ProductListAdapter(private val imagesLoader: ImagesLoader) : StickyHeaderG
             notifyAllSectionsDataSetChanged()
         }
     }
+
+    var onClickItem: (Int) -> Unit = {}
 
     override fun getSectionCount(): Int {
         return clusterList.size
@@ -38,7 +40,7 @@ class ProductListAdapter(private val imagesLoader: ImagesLoader) : StickyHeaderG
     override fun onCreateItemViewHolder(parent: ViewGroup, itemType: Int): ItemViewHolder {
         val inflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = inflater.inflate(R.layout.item_list, parent, false)
-        return ListItemViewHolder(imagesLoader, view)
+        return ListItemViewHolder(view, imagesLoader, onClickItem)
     }
 
 
@@ -49,13 +51,7 @@ class ProductListAdapter(private val imagesLoader: ImagesLoader) : StickyHeaderG
 
     override fun onBindItemViewHolder(viewHolder: ItemViewHolder, section: Int, offset: Int) {
         val listItemHolder = viewHolder as ListItemViewHolder
-        val productData = clusterList[section].products[offset]
-        with(listItemHolder){
-            showImage(productData.imageUrl)
-            showTitle(productData.title)
-            showPrice(productData.price)
-            showSize(productData.size)
-        }
+        listItemHolder.bind(clusterList[section].products[offset])
     }
 
 }
@@ -67,24 +63,19 @@ class ClusterHeaderViewHolder(itemView: View): StickyHeaderGridAdapter.HeaderVie
 }
 
 class ListItemViewHolder(
+    itemView: View,
     private val imagesLoader: ImagesLoader,
-    itemView: View
+    private val onClick: (Int) -> Unit
 ) : StickyHeaderGridAdapter.ItemViewHolder(itemView) {
 
-    fun showImage(imageUrl: String) {
-        imagesLoader.loadImage(imageUrl, itemView.food_image)
-    }
-
-    fun showTitle(title: String) {
-        itemView.title_tv.text = title
-    }
-
-    fun showSize(size: String) {
-        itemView.size_tv.text = size
-    }
-
-    fun showPrice(price: String) {
-        itemView.price_tv.text = price
+    fun bind(product: Product){
+        with(itemView){
+            setOnClickListener { onClick(product.id) }
+            imagesLoader.loadImage(product.imageUrl, food_image)
+            title_tv.text = product.title
+            size_tv.text = product.size
+            price_tv.text = product.price
+        }
     }
 
 }
