@@ -10,13 +10,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class ProductDomainMapperTest {
+class ProductListMapperTest {
 
-    private lateinit var sut: ProductDomainMapper
+    private lateinit var sut: ProductListMapper
 
     @Before
     fun setUp() {
-        sut = ProductDomainMapper()
+        sut = ProductListMapper()
     }
 
     @Test
