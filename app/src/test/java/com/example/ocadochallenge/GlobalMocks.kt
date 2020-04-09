@@ -6,10 +6,6 @@ import com.example.ocadochallenge.repository.rest.model.ProductClusterListNetwor
 import com.example.ocadochallenge.repository.rest.model.ProductClusterNetworkModel
 import com.example.ocadochallenge.repository.rest.model.ProductNetworkModel
 
-object GlobalConstants {
-    const val ANY_FOOD = "some food"
-    const val ANY_OTHER_FOOD = "some other food"
-}
 
 val someNetworkProduct = ProductNetworkModel(
     id = 12345,
@@ -27,13 +23,22 @@ val someProduct = Product(
     imageUrl = "image"
 )
 
-val someOtherProduct =  Product(
-    id = 67891,
-    price = "4.45",
-    title = "some other title",
-    size = "5 units",
-    imageUrl = "otherImage"
+fun getProductById(id: Int) = Product(
+    id = id,
+    price = "1.45",
+    title = "some title",
+    size = "6 units",
+    imageUrl = "image"
 )
+
+fun getNetworkProductById(id: Int) = ProductNetworkModel(
+    id = id,
+    price = "1.45",
+    title = "some title",
+    size = "6 units",
+    imageUrl = "image"
+)
+
 
 fun getProductClusterList(): List<ProductCluster> {
     val someProductClusterModel = ProductCluster(
@@ -52,23 +57,29 @@ fun getOtherProductClusterList(): List<ProductCluster> {
 }
 
 fun getNetworkModel(): ProductClusterListNetworkModel {
-    val someProductNetworkCluster = ProductClusterNetworkModel(
+    return ProductClusterListNetworkModel(
+        clusters = listOf(getNetworkClusterModel())
+    )
+}
+
+private fun getNetworkClusterModel(): ProductClusterNetworkModel {
+    return ProductClusterNetworkModel(
         tag = "tag",
         items = listOf(someNetworkProduct, someNetworkProduct)
-    )
-    return ProductClusterListNetworkModel(
-        clusters = listOf(someProductNetworkCluster)
     )
 }
 
 fun getOtherNetworkModel(): ProductClusterListNetworkModel {
-    val someProductNetworkCluster = ProductClusterNetworkModel(
-        tag = "otherTag",
-        items = listOf(someNetworkProduct)
-    )
+    val someProductNetworkCluster = getOtherNetworkClusterModel()
     return ProductClusterListNetworkModel(
         clusters = listOf(someProductNetworkCluster, someProductNetworkCluster)
     )
 }
 
+private fun getOtherNetworkClusterModel(): ProductClusterNetworkModel {
+    return ProductClusterNetworkModel(
+        tag = "otherTag",
+        items = listOf(someNetworkProduct)
+    )
+}
 
