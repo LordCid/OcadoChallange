@@ -4,12 +4,14 @@ import com.example.ocadochallenge.domain.Mapper
 import com.example.ocadochallenge.domain.model.Product
 import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.repository.rest.model.ProductClusterListNetworkModel
+import com.example.ocadochallenge.repository.rest.model.ProductNetworkModel
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
 class ProductsNetworkDataSourceImpl @Inject constructor(
     private val apiService: ApiService,
-    private val mapper: @JvmSuppressWildcards Mapper<ProductClusterListNetworkModel, List<ProductCluster>>
+    private val listMapper: @JvmSuppressWildcards Mapper<ProductClusterListNetworkModel, List<ProductCluster>>,
+    val productMapper: @JvmSuppressWildcards  Mapper<ProductNetworkModel, Product>
 ) : ProductsNetworkDataSource {
     override suspend fun getProducts(): Result<List<ProductCluster>> {
         return runCatching {
@@ -17,7 +19,7 @@ class ProductsNetworkDataSourceImpl @Inject constructor(
         }.fold(
             onSuccess = {
                 val clusterList = it.body()?.let {
-                        response -> mapper.map(response)
+                        response -> listMapper.map(response)
                 }.orEmpty()
                 Result.success(clusterList)
             },
@@ -26,14 +28,20 @@ class ProductsNetworkDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getProduct(id: Int): Result<Product> {
-        val result =apiService.getProduct(id)
-        return Result.success(Product(
-            id = 12345,
-            price = "1.45",
-            title = "some title",
-            size = "6 units",
-            imageUrl = "image"
-        ))
+        return runCatching {
+            apiService.getProduct(id).awaitResponse()
+        }.fold(
+            onSuccess = {
+                if(it.body() != null){
+                    val product = productMapper.map(it.body() as ProductNetworkModel)
+                    Result.success(product)
+                } else {
+                    Result.failure(Exception("Failure when retreving product"))
+                }
+
+            },
+            onFailure = { Result.failure(it) }
+        )
     }
 
 }

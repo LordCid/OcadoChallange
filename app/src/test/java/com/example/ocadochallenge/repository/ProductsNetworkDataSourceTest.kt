@@ -1,6 +1,7 @@
 package com.example.ocadochallenge.repository
 
 import com.example.ocadochallenge.domain.ProductListMapper
+import com.example.ocadochallenge.domain.ProductMapper
 import com.example.ocadochallenge.getNetworkModel
 import com.example.ocadochallenge.getOtherNetworkModel
 import com.example.ocadochallenge.getOtherProductClusterList
@@ -25,11 +26,12 @@ class ProductsNetworkDataSourceTest {
 
     private val apiService = mock<ApiService>()
 
-    private val mapper = ProductListMapper()
+    private val listMapper = ProductListMapper()
+    private val productMapper = ProductMapper()
 
     @Before
     fun setUp() {
-        sut = ProductsNetworkDataSourceImpl(apiService, mapper)
+        sut = ProductsNetworkDataSourceImpl(apiService, listMapper, productMapper)
     }
 
     @Test
@@ -59,9 +61,9 @@ class ProductsNetworkDataSourceTest {
     }
 
     @Test
-    fun `Should return failure when response is Error`() {
+    fun `Should return failure when get product list response is Error`() {
         runBlocking {
-            givenNetworkResponseKO()
+            givenNetworkGetProductListResponseKO()
 
             val result = sut.getProducts()
             assert(result.isFailure)
@@ -73,7 +75,7 @@ class ProductsNetworkDataSourceTest {
         runBlocking {
             val someId = 12345
             val expected = getProductById(someId)
-            givenNetworkResponseOKGetProduct(someId)
+            givenNetworkGetProductByIdResponseOK(someId)
 
             val actual = sut.getProduct(someId)
 
@@ -87,7 +89,7 @@ class ProductsNetworkDataSourceTest {
         runBlocking {
             val someId = 4567
             val expected = getProductById(someId)
-            givenNetworkResponseOKGetProduct(someId)
+            givenNetworkGetProductByIdResponseOK(someId)
 
             val actual = sut.getProduct(someId)
 
@@ -96,11 +98,17 @@ class ProductsNetworkDataSourceTest {
         }
     }
 
-    private fun givenNetworkResponseOKGetProduct(someId: Int) {
-        given(apiService.getProduct(someId)).
-        willReturn(Calls.response(getNetworkProductById(someId)))
-    }
+    @Test
+    fun `Should return failure when get product by Id response is Error`() {
+        runBlocking {
+            val someId = 12345
+            givenNetworkGetProductByIdResponseKO(someId)
 
+            val result = sut.getProduct(someId)
+
+            assert(result.isFailure)
+        }
+    }
 
     private fun givenNetworkResponseOK() {
         given(apiService.getProductList())
@@ -112,8 +120,18 @@ class ProductsNetworkDataSourceTest {
             .willReturn(Calls.response(getOtherNetworkModel()))
     }
 
-    private fun givenNetworkResponseKO() {
+    private fun givenNetworkGetProductListResponseKO() {
         given(apiService.getProductList())
-            .willReturn(Calls.failure(Exception()))
+            .willReturn(Calls.failure(mock<Exception>()))
+    }
+
+    private fun givenNetworkGetProductByIdResponseOK(someId: Int) {
+        given(apiService.getProduct(someId)).
+        willReturn(Calls.response(getNetworkProductById(someId)))
+    }
+
+    private fun givenNetworkGetProductByIdResponseKO(someId: Int) {
+        given(apiService.getProduct(someId))
+            .willReturn(Calls.failure(mock<Exception>()))
     }
 }
