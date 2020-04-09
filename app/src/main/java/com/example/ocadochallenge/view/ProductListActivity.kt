@@ -8,6 +8,7 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.brewdogbeers.Constants.ARG_PRODUCT_ID
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
 import com.example.ocadochallenge.domain.model.ProductCluster
@@ -47,6 +48,7 @@ class ProductListActivity: AppCompatActivity(), ProductListContract.View {
         }
         listAdapter.onClickItem = {
             val intent = Intent(this, ProductDetailActivity::class.java)
+            intent.putExtra(ARG_PRODUCT_ID, it)
             startActivity(intent)
         }
     }
