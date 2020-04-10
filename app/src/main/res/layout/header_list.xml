@@ -5,12 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp">
+    android:background="@color/design_default_color_primary"
+    android:padding="@dimen/margin_padding_size_small"
+    android:clickable="false">
 
     <TextView
         android:id="@+id/cluster_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cardview_light_background"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

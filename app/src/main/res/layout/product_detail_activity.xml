@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_padding_size_medium">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content_container"
@@ -15,44 +16,52 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <ImageView
-            android:id="@+id/product_detail_image"
-            android:layout_width="160dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/title_tv"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_launcher_foreground" />
-
         <TextView
             android:id="@+id/title_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            app:layout_constraintStart_toEndOf="@id/product_detail_image"
+            android:layout_marginBottom="@dimen/product_detail_tv_margin"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/description_tv"
+            app:layout_constraintBottom_toTopOf="@id/product_detail_image"
             app:layout_constraintVertical_chainStyle="spread_inside"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_xlarge"
             tools:text="Title" />
+
+        <ImageView
+            android:id="@+id/product_detail_image"
+            android:layout_width="@dimen/image_detail_size"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/product_detail_tv_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_tv"
+            app:layout_constraintBottom_toTopOf="@id/description_tv"
+            tools:src="@drawable/ic_launcher_foreground" />
+
 
         <TextView
             android:id="@+id/description_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
-            app:layout_constraintStart_toEndOf="@id/product_detail_image"
+            android:layout_marginBottom="@dimen/product_detail_tv_margin"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_tv"
+            app:layout_constraintTop_toBottomOf="@id/product_detail_image"
             app:layout_constraintBottom_toTopOf="@id/allergy_tv"
             tools:text="Description" />
 
         <TextView
             android:id="@+id/allergy_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/product_detail_image"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description_tv"
             tools:text="Allergy" />
@@ -64,6 +73,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_xxlarge"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

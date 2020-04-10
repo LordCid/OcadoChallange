@@ -1,13 +1,16 @@
 package com.example.ocadochallenge.view
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.brewdogbeers.Constants.ARG_PRODUCT_ID
 import com.example.ocadochallenge.R
 import com.example.ocadochallenge.domain.imageloader.ImagesLoader
@@ -44,6 +47,11 @@ class ProductListActivity: AppCompatActivity(), ProductListContract.View {
     private fun setUpUI() {
         listView.apply {
             layoutManager = GridLayoutManager(context, 1)
+            addItemDecoration(
+                MarginItemDecoration(
+                    resources.getDimension(R.dimen.margin_padding_size_small).toInt()
+                )
+            )
             this.adapter = listAdapter
         }
         listAdapter.onClickItem = {
@@ -63,5 +71,19 @@ class ProductListActivity: AppCompatActivity(), ProductListContract.View {
         listView.visibility = GONE
         error_tv.visibility = VISIBLE
         error_tv.text = getText(R.string.error_message)
+    }
+
+    class MarginItemDecoration(private val spaceHeight: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(outRect: Rect, view: View,
+                                    parent: RecyclerView, state: RecyclerView.State) {
+            with(outRect) {
+                if (parent.getChildAdapterPosition(view) == 0) {
+                    top = spaceHeight
+                }
+                left =  spaceHeight
+                right = spaceHeight
+                bottom = spaceHeight
+            }
+        }
     }
 }
