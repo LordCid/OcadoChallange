@@ -34,7 +34,7 @@ class ProductsNetworkDataSourceImpl @Inject constructor(
                     val product = listMapper.mapProduct(it.body() as ProductNetworkModel)
                     Result.success(product)
                 } else {
-                    Result.failure(Exception("Failure when retreving product"))
+                    Result.failure(Exception("Failure when retrieving product"))
                 }
 
             },

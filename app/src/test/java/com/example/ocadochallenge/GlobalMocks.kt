@@ -7,7 +7,7 @@ import com.example.ocadochallenge.repository.rest.model.ProductClusterNetworkMod
 import com.example.ocadochallenge.repository.rest.model.ProductNetworkModel
 
 
-val someNetworkProduct = ProductNetworkModel(
+private val someNetworkProduct = ProductNetworkModel(
     id = 12345,
     price = "1.45",
     title = "some title",
@@ -15,7 +15,7 @@ val someNetworkProduct = ProductNetworkModel(
     imageUrl = "image"
 )
 
-val someProduct = Product(
+private val someProduct = Product(
     id = 12345,
     price = "1.45",
     title = "some title",

@@ -2,8 +2,8 @@ package com.example.ocadochallenge.presenter
 
 import com.example.ocadochallenge.domain.model.ProductCluster
 import com.example.ocadochallenge.domain.usecase.GetProductListUseCase
-import com.example.ocadochallenge.someProduct
-import com.nhaarman.mockitokotlin2.any
+import com.example.ocadochallenge.getOtherProductClusterList
+import com.example.ocadochallenge.getProductClusterList
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.Dispatchers
@@ -44,11 +44,21 @@ class ProductListPresenterTest {
     @Test
     fun `Given product list get, it is shown into UI`() {
         runBlocking {
-            val someCluster = ProductCluster(
-                tag = "someTag",
-                products = listOf(someProduct, someProduct)
-            )
-            val expectedList = listOf(someCluster)
+            val expectedList = getProductClusterList()
+            givenSuccessResultWithValues(expectedList)
+
+            sut.getProductList()
+
+            val inOrder = inOrder(view, getProductListUseCase)
+            inOrder.verify(getProductListUseCase).invoke()
+            inOrder.verify(view).showResultList(expectedList)
+        }
+    }
+
+    @Test
+    fun `Given OTHER product list get, it is shown into UI`() {
+        runBlocking {
+            val expectedList = getOtherProductClusterList()
             givenSuccessResultWithValues(expectedList)
 
             sut.getProductList()
@@ -71,8 +81,6 @@ class ProductListPresenterTest {
             inOrder.verify(view).showError()
         }
     }
-
-
 
     private suspend fun givenSuccessResultWithValues(list: List<ProductCluster>) {
         given(getProductListUseCase.invoke()).willReturn(Result.success(list))
