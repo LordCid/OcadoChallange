@@ -1,5 +1,5 @@
 *.iml
-.gradle
+.gradle/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -17,10 +17,6 @@
 .idea/runConfigurations.xml
 .idea/vcs.xml
 .idea/codeStyles/Project.xml
-build.gradle
-gradle.properties
 gradlew
 gradlew.bat
-settings.gradle
 gradle/wrapper/gradle-wrapper.jar
-gradle/wrapper/gradle-wrapper.properties
