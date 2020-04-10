@@ -17,6 +17,6 @@ interface ProductDetailModule{
     @Binds
     fun bindPresenter(presenter: ProductDetailPresenter): ProductDetailContract.Presenter
 
-    @Binds
-    fun bindImagesLoader(images: GlideImplementation): ImagesLoader
+//    @Binds
+//    fun bindImagesLoader(images: GlideImplementation): ImagesLoader
 }

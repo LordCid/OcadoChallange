@@ -20,18 +20,5 @@ interface ProductListModule {
 
     @Binds
     fun bindPresenter(presenter: ProductListPresenter): ProductListContract.Presenter
-
-    @Binds
-    fun bindImagesLoader(images: GlideImplementation): ImagesLoader
 }
 
-@Module
-object ProductListProvidesModule {
-    @Provides
-    @JvmStatic
-    fun providesApiService() = ApiService.create()
-
-    @Provides
-    @JvmStatic
-    fun providesProductListMapper(): ProductMapper = ProductMapperImp()
-}

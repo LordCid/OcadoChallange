@@ -9,7 +9,8 @@ import dagger.android.ContributesAndroidInjector
     includes = [
         DomainModule::class,
         RepositoryModule::class,
-        ProductListProvidesModule::class
+        ProvidesModule::class,
+        ImageLoaderModule::class
     ]
 )
 interface ActivityBuilder {
